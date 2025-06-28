@@ -1,0 +1,48 @@
+int l = 10;  // lamp relay pin
+int f = 8;   // fan relay pin
+
+String voice;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(l, OUTPUT);  
+  pinMode(f, OUTPUT);   
+  digitalWrite(l, LOW);
+  digitalWrite(f, LOW);
+}
+
+void loop() {
+  while (Serial.available()) {
+    delay(3);
+    char c = Serial.read();
+    voice += c;
+  }
+
+  if (voice.length() > 0) {
+    voice.trim(); 
+    Serial.println(voice);
+
+    if (voice == "turn on light") {
+      digitalWrite(l, HIGH);
+    } 
+    else if (voice == "turn off light") {
+      digitalWrite(l, LOW);
+    } 
+    else if (voice == "turn on fan") {
+      digitalWrite(f, HIGH);
+    } 
+    else if (voice == "turn off fan") {
+      digitalWrite(f, LOW);
+    } 
+    else if (voice == "turn on all") {
+      digitalWrite(l, HIGH);
+      digitalWrite(f, HIGH);
+    } 
+    else if (voice == "turn off all") {
+      digitalWrite(l, LOW);
+      digitalWrite(f, LOW);
+    }
+
+    voice = "";  // Clear input after processing
+  }
+}
